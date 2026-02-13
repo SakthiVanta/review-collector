@@ -1,6 +1,6 @@
-import { AIReviewForm } from "@/components/AIReviewForm";
+import { ReviewForm } from "@/components/ReviewForm";
 import { shopConfig } from "@/config/shop";
-import { Sparkles, Bot, Zap } from "lucide-react";
+import { Sparkles, Zap } from "lucide-react";
 
 export default function Home() {
   return (
@@ -31,7 +31,7 @@ export default function Home() {
         <div className="flex items-center gap-4 mb-6">
           <div className="relative">
             <div className="w-14 h-14 bg-gradient-to-br from-violet-500 via-fuchsia-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-2xl shadow-violet-500/40">
-              <Bot className="w-7 h-7 text-white" />
+              <Sparkles className="w-7 h-7 text-white" />
             </div>
             <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-400 rounded-full border-2 border-slate-900 flex items-center justify-center">
               <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
@@ -42,7 +42,7 @@ export default function Home() {
               <h1 className="text-base font-bold text-white tracking-tight">{shopConfig.name}</h1>
               <div className="flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-violet-500/30 to-fuchsia-500/30 rounded-full border border-violet-400/30">
                 <Sparkles className="w-3 h-3 text-violet-300" />
-                <span className="text-[10px] font-bold text-violet-200 uppercase tracking-wider">AI</span>
+                <span className="text-[10px] font-bold text-violet-200 uppercase tracking-wider">Pro</span>
               </div>
             </div>
             <div className="flex items-center gap-2 mt-1">
@@ -53,7 +53,7 @@ export default function Home() {
               <span className="text-gray-600">|</span>
               <div className="flex items-center gap-1">
                 <Zap className="w-3 h-3 text-amber-400" />
-                <span className="text-[11px] text-amber-400 font-medium">Powered by Gemini</span>
+                <span className="text-[11px] text-amber-400 font-medium">Fast & Reliable</span>
               </div>
             </div>
           </div>
@@ -61,13 +61,13 @@ export default function Home() {
 
         {/* Form Card */}
         <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl shadow-black/30 overflow-hidden border border-white/20">
-          <AIReviewForm />
+          <ReviewForm />
         </div>
         
         {/* Footer */}
         <div className="mt-6 text-center">
           <p className="text-[11px] text-white/40">
-            AI Review Generator v1.0 • Made with 
+            Review Generator v1.0 • Made with 
             <span className="text-red-400 mx-1">♥</span> 
             for {shopConfig.name}
           </p>

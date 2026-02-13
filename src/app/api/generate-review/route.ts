@@ -74,7 +74,7 @@ export async function POST(req: Request) {
             SHOP_LOCATIONS.find(loc => loc.value === shopLocation)?.label || shopLocation 
             : undefined;
 
-        // Generate review using Gemini
+        // Generate review
         const result = await generateReview({
             orgName,
             orgType,

@@ -127,7 +127,7 @@
   }
 }
 
-/* Custom Scrollbar for AI Form */
+/* Custom Scrollbar for Form */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
@@ -195,8 +195,8 @@ input[type="range"]::-moz-range-thumb:hover {
   transform: scale(1.15);
 }
 
-/* AI Form Container Animation */
-.ai-form-container {
+/* Form Container Animation */
+.form-container {
   animation: slideUp 0.4s ease-out;
 }
 
@@ -219,8 +219,8 @@ input[type="range"]::-moz-range-thumb:hover {
   background-clip: text;
 }
 
-/* Glow Effect for AI Elements */
-.ai-glow {
+/* Glow Effect for Elements */
+.element-glow {
   box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
 }
 
@@ -234,8 +234,8 @@ input:focus, textarea:focus {
   box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
 }
 
-/* AI Pulse Animation for Loading */
-@keyframes ai-pulse {
+/* Pulse Animation for Loading */
+@keyframes soft-pulse {
   0%, 100% {
     opacity: 1;
   }
@@ -244,6 +244,6 @@ input:focus, textarea:focus {
   }
 }
 
-.ai-pulse {
-  animation: ai-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.soft-pulse {
+  animation: soft-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

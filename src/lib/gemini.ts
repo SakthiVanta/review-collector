@@ -1,13 +1,13 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 /**
- * Gemini AI Service for Review Generation
+ * Review Generation Service
  * 
  * Generates personalized, high-quality customer reviews based on customer
  * and organization information.
  * 
  * Environment Variables:
- * GOOGLE_API_KEY=your_gemini_api_key
+ * GOOGLE_API_KEY=your_api_key
  */
 
 interface ReviewGenerationInput {
@@ -50,9 +50,9 @@ interface ReviewGenerationResult {
 }
 
 /**
- * Initialize Gemini AI client
+ * Initialize review generation client
  */
-function getGeminiClient() {
+function getReviewClient() {
   const apiKey = process.env.GOOGLE_API_KEY;
 
   if (!apiKey) {
@@ -63,13 +63,13 @@ function getGeminiClient() {
 }
 
 /**
- * Generate a review using Gemini AI
+ * Generate a customer review
  */
 export async function generateReview(
   input: ReviewGenerationInput
 ): Promise<ReviewGenerationResult> {
   try {
-    const genAI = getGeminiClient();
+    const genAI = getReviewClient();
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const prompt = buildReviewPrompt(input);
@@ -83,7 +83,7 @@ export async function generateReview(
       review,
     };
   } catch (error) {
-    console.error("Gemini API Error:", error);
+    console.error("Review Generation Error:", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to generate review",
@@ -137,9 +137,9 @@ Generate the review now:`;
 }
 
 /**
- * Check Gemini API configuration status
+ * Check API configuration status
  */
-export function checkGeminiStatus(): {
+export function checkApiStatus(): {
   configured: boolean;
   message: string;
   instructions?: string[];
@@ -149,7 +149,7 @@ export function checkGeminiStatus(): {
   if (!apiKey) {
     return {
       configured: false,
-      message: "Google Gemini API not configured",
+      message: "API not configured",
       instructions: [
         "1. Get API key from https://makersuite.google.com/app/apikey",
         "2. Add GOOGLE_API_KEY=your_key to .env file",
@@ -159,13 +159,13 @@ export function checkGeminiStatus(): {
 
   return {
     configured: true,
-    message: "Google Gemini API is configured",
+    message: "API is configured",
   };
 }
 
-const geminiService = {
+const reviewService = {
   generateReview,
-  checkGeminiStatus,
+  checkApiStatus,
 };
 
-export default geminiService;
+export default reviewService;

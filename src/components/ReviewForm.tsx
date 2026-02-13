@@ -39,8 +39,8 @@ import {
     ThumbsUp,
     Lightbulb,
     Wand2,
-    Bot,
     Sparkle,
+    Bot,
     Check,
     Calendar
 } from "lucide-react"
@@ -159,7 +159,7 @@ function StepIndicator({ currentStep }: { currentStep: Step }) {
     const steps = [
         { icon: Building2, label: "Business" },
         { icon: User, label: "Customer" },
-        { icon: Sparkles, label: "AI Review" },
+        { icon: Sparkles, label: "Review" },
     ]
     
     return (
@@ -209,11 +209,11 @@ function StepIndicator({ currentStep }: { currentStep: Step }) {
     )
 }
 
-function AIBadge() {
+function PremiumBadge() {
     return (
         <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-violet-100 to-fuchsia-100 rounded-full border border-violet-200">
             <Sparkle className="w-3.5 h-3.5 text-violet-600" />
-            <span className="text-[10px] font-bold text-violet-700 uppercase tracking-wider">AI Powered</span>
+            <span className="text-[10px] font-bold text-violet-700 uppercase tracking-wider">Premium</span>
         </div>
     )
 }
@@ -491,7 +491,7 @@ interface FormData {
     emotionalConnection?: string;
 }
 
-export function AIReviewForm() {
+export function ReviewForm() {
     const [currentStep, setCurrentStep] = useState<Step>(1)
     const [isGenerating, setIsGenerating] = useState(false)
     const [generatedReview, setGeneratedReview] = useState<GeneratedReview | null>(null)
@@ -620,7 +620,7 @@ export function AIReviewForm() {
     // Step 1: Organization Information
     if (currentStep === 1) {
         return (
-            <div className="ai-form-container" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' }}>
+            <div className="form-container" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' }}>
                 <StepIndicator currentStep={currentStep} />
                 
                 <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
@@ -633,7 +633,7 @@ export function AIReviewForm() {
                             <p className="text-[11px] text-gray-500">Enter shop and attender details</p>
                         </div>
                     </div>
-                    <AIBadge />
+                    <PremiumBadge />
                 </div>
                 
                 <Form {...orgForm}>
@@ -763,7 +763,7 @@ export function AIReviewForm() {
     // Step 2: Customer Information
     if (currentStep === 2) {
         return (
-            <div className="ai-form-container" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' }}>
+            <div className="form-container" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' }}>
                 <StepIndicator currentStep={currentStep} />
                 
                 <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
@@ -776,7 +776,7 @@ export function AIReviewForm() {
                             <p className="text-[11px] text-gray-500">Quick selections - no typing needed!</p>
                         </div>
                     </div>
-                    <AIBadge />
+                    <PremiumBadge />
                 </div>
                 
                 <Form {...customerForm}>
@@ -1131,12 +1131,12 @@ export function AIReviewForm() {
                                     {isGenerating ? (
                                         <>
                                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                            AI Generating...
+                                            Generating...
                                         </>
                                     ) : (
                                         <>
                                             <Wand2 className="mr-2 w-4 h-4 group-hover:rotate-12 transition-transform" />
-                                            Generate with AI
+                                            Generate Review
                                         </>
                                     )}
                                 </Button>
@@ -1148,10 +1148,10 @@ export function AIReviewForm() {
         )
     }
 
-    // Step 3: AI Generated Review
+    // Step 3: Generated Review
     if (currentStep === 3 && generatedReview) {
         return (
-            <div className="ai-form-container" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' }}>
+            <div className="form-container" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' }}>
                 <StepIndicator currentStep={currentStep} />
                 
                 <div className="px-5 py-4 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500">
@@ -1161,29 +1161,18 @@ export function AIReviewForm() {
                                 <Bot className="w-5 h-5 text-white" />
                             </div>
                             <div>
-                                <h2 className="text-base font-bold text-white">AI Generated Review</h2>
-                                <p className="text-[11px] text-white/80">Powered by Google Gemini</p>
+                                <h2 className="text-base font-bold text-white">Generated Review</h2>
+                                <p className="text-[11px] text-white/80">Review completed</p>
                             </div>
-                        </div>
-                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full">
-                            <Sparkles className="w-3.5 h-3.5 text-white" />
-                            <span className="text-[10px] font-bold text-white uppercase tracking-wider">AI</span>
                         </div>
                     </div>
                 </div>
 
                 <div className="p-5 space-y-5">
                     <div className="relative bg-gradient-to-br from-violet-50 via-fuchsia-50 to-pink-50 rounded-2xl p-5 border border-violet-200 shadow-inner">
-                        <div className="absolute -top-3 left-5">
-                            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full shadow-lg shadow-violet-500/30">
-                                <Sparkles className="w-3 h-3 text-white" />
-                                <span className="text-[10px] font-bold text-white uppercase">AI Generated</span>
-                            </div>
-                        </div>
-                        
-                        <div className="flex items-start gap-3 mt-2">
+                        <div className="flex items-start gap-3">
                             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-violet-500/30">
-                                <Bot className="w-5 h-5 text-white" />
+                                <Sparkles className="w-5 h-5 text-white" />
                             </div>
                             <div className="flex-1">
                                 <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
