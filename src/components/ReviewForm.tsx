@@ -44,7 +44,7 @@ function StarRating({ value, onChange }: { value: string; onChange: (value: stri
                     onClick={() => onChange(star.toString())}
                     onMouseEnter={() => setHoverRating(star)}
                     onMouseLeave={() => setHoverRating(0)}
-                    className="relative p-1 transition-transform duration-150 hover:scale-110 active:scale-95 focus:outline-none"
+                    className="relative p-1 transition-transform duration-150 hover:scale-110 active:scale-95 focus:outline-none cursor-pointer"
                 >
                     <svg
                         className={`w-6 h-6 transition-colors duration-200 ${
@@ -64,6 +64,44 @@ function StarRating({ value, onChange }: { value: string; onChange: (value: stri
                     </svg>
                 </button>
             ))}
+        </div>
+    )
+}
+
+// iOS-style Toggle Switch Component
+function ToggleSwitch({ 
+    checked, 
+    onChange, 
+    label, 
+    icon: Icon 
+}: { 
+    checked: boolean; 
+    onChange: (checked: boolean) => void; 
+    label: string;
+    icon: React.ElementType;
+}) {
+    return (
+        <div 
+            className="flex items-center justify-between py-3 cursor-pointer"
+            onClick={() => onChange(!checked)}
+        >
+            <div className="flex items-center gap-3">
+                <Icon className="w-5 h-5 text-gray-400" />
+                <span className="text-sm font-medium text-gray-700">{label}</span>
+            </div>
+            <div 
+                className={`
+                    relative inline-flex h-7 w-12 items-center rounded-full transition-colors duration-200 ease-in-out cursor-pointer
+                    ${checked ? 'bg-blue-500' : 'bg-gray-300'}
+                `}
+            >
+                <span
+                    className={`
+                        inline-block h-6 w-6 transform rounded-full bg-white shadow-lg transition duration-200 ease-in-out
+                        ${checked ? 'translate-x-6' : 'translate-x-0.5'}
+                    `}
+                />
+            </div>
         </div>
     )
 }
@@ -128,7 +166,7 @@ export function ReviewForm() {
                     onClick={() => { setIsSuccess(false); form.reset(); }}
                     variant="outline"
                     size="sm"
-                    className="rounded-full px-6 text-sm border-gray-300 text-gray-700 hover:bg-gray-50"
+                    className="rounded-full px-6 text-sm border-gray-300 text-gray-700 hover:bg-gray-50 cursor-pointer"
                 >
                     New Request
                 </Button>
@@ -158,7 +196,7 @@ export function ReviewForm() {
                                     <FormControl>
                                         <Input 
                                             placeholder="Enter name" 
-                                            className="h-9 text-sm text-right border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-0 text-gray-900 placeholder:text-gray-400"
+                                            className="h-9 text-sm text-right border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-0 text-gray-900 placeholder:text-gray-400 cursor-text"
                                             {...field} 
                                         />
                                     </FormControl>
@@ -182,7 +220,7 @@ export function ReviewForm() {
                                         <Input 
                                             type="tel"
                                             placeholder="+91xxxxxxxxxx" 
-                                            className="h-9 text-sm text-right border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-0 text-gray-900 placeholder:text-gray-400"
+                                            className="h-9 text-sm text-right border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-0 text-gray-900 placeholder:text-gray-400 cursor-text"
                                             {...field} 
                                         />
                                     </FormControl>
@@ -206,7 +244,7 @@ export function ReviewForm() {
                                         <Input 
                                             type="email"
                                             placeholder="email@example.com" 
-                                            className="h-9 text-sm text-right border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-0 text-gray-900 placeholder:text-gray-400"
+                                            className="h-9 text-sm text-right border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-0 text-gray-900 placeholder:text-gray-400 cursor-text"
                                             {...field} 
                                         />
                                     </FormControl>
@@ -236,7 +274,7 @@ export function ReviewForm() {
                                     <FormControl>
                                         <Input 
                                             placeholder="Product name" 
-                                            className="h-9 text-sm text-right border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-0 text-gray-900 placeholder:text-gray-400"
+                                            className="h-9 text-sm text-right border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-0 text-gray-900 placeholder:text-gray-400 cursor-text"
                                             {...field} 
                                         />
                                     </FormControl>
@@ -279,7 +317,7 @@ export function ReviewForm() {
                             <FormControl>
                                 <Textarea
                                     placeholder={shopConfig.whatsappMessage}
-                                    className="min-h-[100px] text-sm border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 resize-none text-gray-900 placeholder:text-gray-400 leading-relaxed"
+                                    className="min-h-[100px] text-sm border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 resize-none text-gray-900 placeholder:text-gray-400 leading-relaxed cursor-text"
                                     {...field}
                                 />
                             </FormControl>
@@ -293,24 +331,20 @@ export function ReviewForm() {
                     <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Send Via</h3>
                 </div>
 
-                <div className="px-4 py-4 space-y-3">
+                <div className="px-4 divide-y divide-gray-100">
                     <FormField
                         control={form.control}
                         name="sendSMS"
                         render={({ field }) => (
-                            <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormItem className="space-y-0">
                                 <FormControl>
-                                    <input
-                                        type="checkbox"
+                                    <ToggleSwitch
                                         checked={field.value}
-                                        onChange={(e) => field.onChange(e.target.checked)}
-                                        className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                        onChange={field.onChange}
+                                        label="SMS"
+                                        icon={Smartphone}
                                     />
                                 </FormControl>
-                                <div className="flex items-center gap-2 text-sm text-gray-700">
-                                    <Smartphone className="w-4 h-4 text-gray-400" />
-                                    <span>SMS</span>
-                                </div>
                             </FormItem>
                         )}
                     />
@@ -319,25 +353,21 @@ export function ReviewForm() {
                         control={form.control}
                         name="sendWhatsApp"
                         render={({ field }) => (
-                            <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormItem className="space-y-0">
                                 <FormControl>
-                                    <input
-                                        type="checkbox"
+                                    <ToggleSwitch
                                         checked={field.value}
-                                        onChange={(e) => field.onChange(e.target.checked)}
-                                        className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                        onChange={field.onChange}
+                                        label="WhatsApp"
+                                        icon={MessageSquare}
                                     />
                                 </FormControl>
-                                <div className="flex items-center gap-2 text-sm text-gray-700">
-                                    <MessageSquare className="w-4 h-4 text-gray-400" />
-                                    <span>WhatsApp</span>
-                                </div>
                             </FormItem>
                         )}
                     />
 
-                    {form.formState.errors.root && (
-                        <p className="text-xs text-red-500">{form.formState.errors.root.message}</p>
+                    {form.formState.errors.sendWhatsApp && (
+                        <p className="text-xs text-red-500 py-2">{form.formState.errors.sendWhatsApp.message}</p>
                     )}
                 </div>
 
@@ -345,7 +375,7 @@ export function ReviewForm() {
                 <div className="p-4 pt-2 bg-gray-50 border-t border-gray-200">
                     <Button
                         type="submit"
-                        className="w-full h-11 text-sm font-semibold bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white rounded-xl shadow-lg shadow-blue-500/25 transition-all active:scale-[0.98]"
+                        className="w-full h-11 text-sm font-semibold bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white rounded-xl shadow-lg shadow-blue-500/25 transition-all active:scale-[0.98] cursor-pointer"
                         disabled={isSubmitting}
                     >
                         {isSubmitting ? (
