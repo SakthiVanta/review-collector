@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Review Generator
+
+A Next.js application that uses Google's Gemini AI to generate personalized customer reviews based on business and customer information.
+
+## Features
+
+- **3-Step Flow**:
+  1. Business Information (name, type, description)
+  2. Customer Information (purchase details, satisfaction, behavioral insights)
+  3. AI-Generated Review with WhatsApp Deep Link
+
+- **AI-Powered**: Uses Google Gemini API to generate authentic, personalized reviews
+- **No WhatsApp/SMS Integration**: Just generates reviews and provides a WhatsApp deep link
+- **Modern UI**: Clean, mobile-first design with step indicators
+
+## Tech Stack
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS
+- Google Gemini AI API
+- Prisma ORM
+- PostgreSQL
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install Dependencies
+
+```bash
+npm install
+# or
+pnpm install
+```
+
+### 2. Set Up Environment Variables
+
+Copy `.env.example` to `.env` and fill in your values:
+
+```bash
+cp .env.example .env
+```
+
+Required variables:
+- `DATABASE_URL` - PostgreSQL connection string
+- `GOOGLE_API_KEY` - Get from https://makersuite.google.com/app/apikey
+
+### 3. Set Up Database
+
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+### 4. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How It Works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Step 1**: Enter business information
+2. **Step 2**: Enter detailed customer information including:
+   - Customer name and phone
+   - What they purchased and how often
+   - Satisfaction ratings (1-10)
+   - Shopping motivation and preferences
+   - Price sensitivity and brand loyalty
+3. **Step 3**: AI generates a personalized review based on all inputs
+4. **Share**: Click the WhatsApp button to share the review
 
-## Learn More
+## API Routes
 
-To learn more about Next.js, take a look at the following resources:
+- `POST /api/generate-review` - Generate AI review using Gemini
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `DATABASE_URL` | PostgreSQL connection string | Yes |
+| `GOOGLE_API_KEY` | Google Gemini API key | Yes |
+| `APP_URL` | Your app base URL | No (default: http://localhost:3000) |
+| `BUSINESS_WHATSAPP_NUMBER` | Optional business WhatsApp for deep links | No |
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT

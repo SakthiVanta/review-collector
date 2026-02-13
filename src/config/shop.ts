@@ -1,10 +1,10 @@
 export const shopConfig = {
-  name: "SKS Jewellery",
-  email: "contact@sksjewellery.com",
+  name: "Kalyaa Jewellers",
+  email: "contact@kalyaajewellers.com",
   phone: "+91-9876543210",
-  address: "123 Gold Street, Jewelry Market, Mumbai, India",
+  address: "Multiple locations across India",
   logo: "/logo.png",
-  whatsappMessage: "Thank you for choosing SKS Jewellery! We value your feedback. Please click the link below to share your experience with us."
+  whatsappMessage: "Thank you for choosing Kalyaa Jewellers! We value your feedback. Please share your experience with us."
 }
 
 export default shopConfig
