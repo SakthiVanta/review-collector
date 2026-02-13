@@ -23,8 +23,24 @@ model CustomerReview {
   productName   String
   rating        Int
   reviewText    String
+  sendSMS       Boolean      @default(false)
+  sendWhatsApp  Boolean      @default(false)
   createdAt     DateTime     @default(now())
   status        ReviewStatus @default(PENDING)
+}
+
+model ShortLink {
+  id          String   @id @default(uuid())
+  shortCode   String   @unique @db.VarChar(10)
+  reviewText  String   @db.Text
+  customerName String
+  shopName    String?
+  productName String?
+  clicks      Int      @default(0)
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime?
+  
+  @@index([shortCode])
 }
 
 enum ReviewStatus {

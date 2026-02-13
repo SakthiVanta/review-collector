@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
-import { sendWhatsAppReviewLink } from "@/lib/whatsapp";
+import { sendSMSViaTwilio } from "@/lib/twilio-sms";
+import { sendWhatsAppViaTwilio } from "@/lib/twilio-whatsapp";
 
 const reviewSchema = z.object({
     shopName: z.string().min(2),
@@ -12,6 +13,11 @@ const reviewSchema = z.object({
     productName: z.string().min(2),
     rating: z.string(),
     reviewText: z.string().min(20),
+    sendSMS: z.boolean().default(false),
+    sendWhatsApp: z.boolean().default(false),
+}).refine((data) => data.sendSMS || data.sendWhatsApp, {
+    message: "Select at least one notification method",
+    path: ["sendWhatsApp"],
 });
 
 export async function POST(req: Request) {
@@ -26,16 +32,26 @@ export async function POST(req: Request) {
             );
         }
 
-        const { 
-            shopName, 
-            shopEmail, 
-            customerName, 
-            customerEmail, 
-            phoneNumber, 
-            productName, 
-            rating, 
-            reviewText 
+        const {
+            shopName,
+            shopEmail,
+            customerName,
+            customerEmail,
+            phoneNumber,
+            productName,
+            rating,
+            reviewText,
+            sendSMS,
+            sendWhatsApp,
         } = result.data;
+
+        // Validate at least one method is selected
+        if (!sendSMS && !sendWhatsApp) {
+            return NextResponse.json(
+                { error: "Select at least one notification method (SMS or WhatsApp)" },
+                { status: 400 }
+            );
+        }
 
         // Store in DB
         let review;
@@ -50,6 +66,8 @@ export async function POST(req: Request) {
                     productName,
                     rating: parseInt(rating),
                     reviewText,
+                    sendSMS,
+                    sendWhatsApp,
                     status: "PENDING",
                 },
             });
@@ -58,23 +76,74 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Database storage failed" }, { status: 500 });
         }
 
-        // Send WhatsApp Message
-        const whatsappResult = await sendWhatsAppReviewLink(
-            phoneNumber, 
-            customerName, 
-            reviewText,
-            shopName,
-            productName
-        );
+        // Send notifications based on selected methods
+        const results: {
+            sms?: { success: boolean; error?: string; messageId?: string };
+            whatsapp?: { success: boolean; error?: string; messageId?: string };
+        } = {};
 
-        if (!whatsappResult.success && whatsappResult.error !== "Missing credentials") {
-            console.error("Failed to send WhatsApp message");
+        // Send SMS if selected
+        if (sendSMS) {
+            try {
+                const smsResult = await sendSMSViaTwilio(
+                    phoneNumber,
+                    customerName,
+                    reviewText,
+                    shopName,
+                    productName
+                );
+                results.sms = smsResult;
+                console.log("SMS result:", smsResult);
+            } catch (error) {
+                console.error("SMS sending error:", error);
+                results.sms = { success: false, error: "Failed to send SMS" };
+            }
         }
 
-        return NextResponse.json({ 
-            success: true, 
-            reviewId: review.id, 
-            whatsapp: whatsappResult 
+        // Send WhatsApp if selected
+        if (sendWhatsApp) {
+            try {
+                const whatsappResult = await sendWhatsAppViaTwilio(
+                    phoneNumber,
+                    customerName,
+                    reviewText,
+                    shopName,
+                    productName
+                );
+                results.whatsapp = whatsappResult;
+                console.log("WhatsApp result:", whatsappResult);
+            } catch (error) {
+                console.error("WhatsApp sending error:", error);
+                results.whatsapp = { success: false, error: "Failed to send WhatsApp" };
+            }
+        }
+
+        // Update status based on results
+        const smsSuccess = results.sms?.success;
+        const whatsappSuccess = results.whatsapp?.success;
+        
+        let finalStatus: "SENT" | "FAILED" | "PENDING" = "PENDING";
+        if ((sendSMS && smsSuccess) || (sendWhatsApp && whatsappSuccess)) {
+            finalStatus = "SENT";
+        } else if ((sendSMS && !smsSuccess) && (sendWhatsApp && !whatsappSuccess)) {
+            finalStatus = "FAILED";
+        }
+
+        // Update review status
+        try {
+            await prisma.customerReview.update({
+                where: { id: review.id },
+                data: { status: finalStatus },
+            });
+        } catch (updateError) {
+            console.error("Failed to update review status:", updateError);
+        }
+
+        return NextResponse.json({
+            success: true,
+            reviewId: review.id,
+            results,
+            status: finalStatus,
         });
     } catch (error) {
         console.error("API Error:", error);

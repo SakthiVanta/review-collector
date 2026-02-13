@@ -9,4 +9,5 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/CustomerReview'
+export type * from './models/ShortLink'
 export type * from './commonInputTypes'

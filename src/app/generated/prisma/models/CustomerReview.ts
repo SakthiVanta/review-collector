@@ -44,6 +44,8 @@ export type CustomerReviewMinAggregateOutputType = {
   productName: string | null
   rating: number | null
   reviewText: string | null
+  sendSMS: boolean | null
+  sendWhatsApp: boolean | null
   createdAt: Date | null
   status: $Enums.ReviewStatus | null
 }
@@ -58,6 +60,8 @@ export type CustomerReviewMaxAggregateOutputType = {
   productName: string | null
   rating: number | null
   reviewText: string | null
+  sendSMS: boolean | null
+  sendWhatsApp: boolean | null
   createdAt: Date | null
   status: $Enums.ReviewStatus | null
 }
@@ -72,6 +76,8 @@ export type CustomerReviewCountAggregateOutputType = {
   productName: number
   rating: number
   reviewText: number
+  sendSMS: number
+  sendWhatsApp: number
   createdAt: number
   status: number
   _all: number
@@ -96,6 +102,8 @@ export type CustomerReviewMinAggregateInputType = {
   productName?: true
   rating?: true
   reviewText?: true
+  sendSMS?: true
+  sendWhatsApp?: true
   createdAt?: true
   status?: true
 }
@@ -110,6 +118,8 @@ export type CustomerReviewMaxAggregateInputType = {
   productName?: true
   rating?: true
   reviewText?: true
+  sendSMS?: true
+  sendWhatsApp?: true
   createdAt?: true
   status?: true
 }
@@ -124,6 +134,8 @@ export type CustomerReviewCountAggregateInputType = {
   productName?: true
   rating?: true
   reviewText?: true
+  sendSMS?: true
+  sendWhatsApp?: true
   createdAt?: true
   status?: true
   _all?: true
@@ -225,6 +237,8 @@ export type CustomerReviewGroupByOutputType = {
   productName: string
   rating: number
   reviewText: string
+  sendSMS: boolean
+  sendWhatsApp: boolean
   createdAt: Date
   status: $Enums.ReviewStatus
   _count: CustomerReviewCountAggregateOutputType | null
@@ -262,6 +276,8 @@ export type CustomerReviewWhereInput = {
   productName?: Prisma.StringFilter<"CustomerReview"> | string
   rating?: Prisma.IntFilter<"CustomerReview"> | number
   reviewText?: Prisma.StringFilter<"CustomerReview"> | string
+  sendSMS?: Prisma.BoolFilter<"CustomerReview"> | boolean
+  sendWhatsApp?: Prisma.BoolFilter<"CustomerReview"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CustomerReview"> | Date | string
   status?: Prisma.EnumReviewStatusFilter<"CustomerReview"> | $Enums.ReviewStatus
 }
@@ -276,6 +292,8 @@ export type CustomerReviewOrderByWithRelationInput = {
   productName?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   reviewText?: Prisma.SortOrder
+  sendSMS?: Prisma.SortOrder
+  sendWhatsApp?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
@@ -293,6 +311,8 @@ export type CustomerReviewWhereUniqueInput = Prisma.AtLeast<{
   productName?: Prisma.StringFilter<"CustomerReview"> | string
   rating?: Prisma.IntFilter<"CustomerReview"> | number
   reviewText?: Prisma.StringFilter<"CustomerReview"> | string
+  sendSMS?: Prisma.BoolFilter<"CustomerReview"> | boolean
+  sendWhatsApp?: Prisma.BoolFilter<"CustomerReview"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CustomerReview"> | Date | string
   status?: Prisma.EnumReviewStatusFilter<"CustomerReview"> | $Enums.ReviewStatus
 }, "id">
@@ -307,6 +327,8 @@ export type CustomerReviewOrderByWithAggregationInput = {
   productName?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   reviewText?: Prisma.SortOrder
+  sendSMS?: Prisma.SortOrder
+  sendWhatsApp?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   _count?: Prisma.CustomerReviewCountOrderByAggregateInput
@@ -329,6 +351,8 @@ export type CustomerReviewScalarWhereWithAggregatesInput = {
   productName?: Prisma.StringWithAggregatesFilter<"CustomerReview"> | string
   rating?: Prisma.IntWithAggregatesFilter<"CustomerReview"> | number
   reviewText?: Prisma.StringWithAggregatesFilter<"CustomerReview"> | string
+  sendSMS?: Prisma.BoolWithAggregatesFilter<"CustomerReview"> | boolean
+  sendWhatsApp?: Prisma.BoolWithAggregatesFilter<"CustomerReview"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CustomerReview"> | Date | string
   status?: Prisma.EnumReviewStatusWithAggregatesFilter<"CustomerReview"> | $Enums.ReviewStatus
 }
@@ -343,6 +367,8 @@ export type CustomerReviewCreateInput = {
   productName: string
   rating: number
   reviewText: string
+  sendSMS?: boolean
+  sendWhatsApp?: boolean
   createdAt?: Date | string
   status?: $Enums.ReviewStatus
 }
@@ -357,6 +383,8 @@ export type CustomerReviewUncheckedCreateInput = {
   productName: string
   rating: number
   reviewText: string
+  sendSMS?: boolean
+  sendWhatsApp?: boolean
   createdAt?: Date | string
   status?: $Enums.ReviewStatus
 }
@@ -371,6 +399,8 @@ export type CustomerReviewUpdateInput = {
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   reviewText?: Prisma.StringFieldUpdateOperationsInput | string
+  sendSMS?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendWhatsApp?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
 }
@@ -385,6 +415,8 @@ export type CustomerReviewUncheckedUpdateInput = {
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   reviewText?: Prisma.StringFieldUpdateOperationsInput | string
+  sendSMS?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendWhatsApp?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
 }
@@ -399,6 +431,8 @@ export type CustomerReviewCreateManyInput = {
   productName: string
   rating: number
   reviewText: string
+  sendSMS?: boolean
+  sendWhatsApp?: boolean
   createdAt?: Date | string
   status?: $Enums.ReviewStatus
 }
@@ -413,6 +447,8 @@ export type CustomerReviewUpdateManyMutationInput = {
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   reviewText?: Prisma.StringFieldUpdateOperationsInput | string
+  sendSMS?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendWhatsApp?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
 }
@@ -427,6 +463,8 @@ export type CustomerReviewUncheckedUpdateManyInput = {
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   reviewText?: Prisma.StringFieldUpdateOperationsInput | string
+  sendSMS?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sendWhatsApp?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
 }
@@ -441,6 +479,8 @@ export type CustomerReviewCountOrderByAggregateInput = {
   productName?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   reviewText?: Prisma.SortOrder
+  sendSMS?: Prisma.SortOrder
+  sendWhatsApp?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
@@ -459,6 +499,8 @@ export type CustomerReviewMaxOrderByAggregateInput = {
   productName?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   reviewText?: Prisma.SortOrder
+  sendSMS?: Prisma.SortOrder
+  sendWhatsApp?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
@@ -473,6 +515,8 @@ export type CustomerReviewMinOrderByAggregateInput = {
   productName?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   reviewText?: Prisma.SortOrder
+  sendSMS?: Prisma.SortOrder
+  sendWhatsApp?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
@@ -491,6 +535,10 @@ export type IntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -513,6 +561,8 @@ export type CustomerReviewSelect<ExtArgs extends runtime.Types.Extensions.Intern
   productName?: boolean
   rating?: boolean
   reviewText?: boolean
+  sendSMS?: boolean
+  sendWhatsApp?: boolean
   createdAt?: boolean
   status?: boolean
 }, ExtArgs["result"]["customerReview"]>
@@ -527,6 +577,8 @@ export type CustomerReviewSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   productName?: boolean
   rating?: boolean
   reviewText?: boolean
+  sendSMS?: boolean
+  sendWhatsApp?: boolean
   createdAt?: boolean
   status?: boolean
 }, ExtArgs["result"]["customerReview"]>
@@ -541,6 +593,8 @@ export type CustomerReviewSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   productName?: boolean
   rating?: boolean
   reviewText?: boolean
+  sendSMS?: boolean
+  sendWhatsApp?: boolean
   createdAt?: boolean
   status?: boolean
 }, ExtArgs["result"]["customerReview"]>
@@ -555,11 +609,13 @@ export type CustomerReviewSelectScalar = {
   productName?: boolean
   rating?: boolean
   reviewText?: boolean
+  sendSMS?: boolean
+  sendWhatsApp?: boolean
   createdAt?: boolean
   status?: boolean
 }
 
-export type CustomerReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "shopName" | "shopEmail" | "customerName" | "customerEmail" | "phoneNumber" | "productName" | "rating" | "reviewText" | "createdAt" | "status", ExtArgs["result"]["customerReview"]>
+export type CustomerReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "shopName" | "shopEmail" | "customerName" | "customerEmail" | "phoneNumber" | "productName" | "rating" | "reviewText" | "sendSMS" | "sendWhatsApp" | "createdAt" | "status", ExtArgs["result"]["customerReview"]>
 
 export type $CustomerReviewPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "CustomerReview"
@@ -574,6 +630,8 @@ export type $CustomerReviewPayload<ExtArgs extends runtime.Types.Extensions.Inte
     productName: string
     rating: number
     reviewText: string
+    sendSMS: boolean
+    sendWhatsApp: boolean
     createdAt: Date
     status: $Enums.ReviewStatus
   }, ExtArgs["result"]["customerReview"]>
@@ -1008,6 +1066,8 @@ export interface CustomerReviewFieldRefs {
   readonly productName: Prisma.FieldRef<"CustomerReview", 'String'>
   readonly rating: Prisma.FieldRef<"CustomerReview", 'Int'>
   readonly reviewText: Prisma.FieldRef<"CustomerReview", 'String'>
+  readonly sendSMS: Prisma.FieldRef<"CustomerReview", 'Boolean'>
+  readonly sendWhatsApp: Prisma.FieldRef<"CustomerReview", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"CustomerReview", 'DateTime'>
   readonly status: Prisma.FieldRef<"CustomerReview", 'ReviewStatus'>
 }

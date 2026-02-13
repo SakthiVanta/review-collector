@@ -51,7 +51,8 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  CustomerReview: 'CustomerReview'
+  CustomerReview: 'CustomerReview',
+  ShortLink: 'ShortLink'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -80,11 +81,28 @@ export const CustomerReviewScalarFieldEnum = {
   productName: 'productName',
   rating: 'rating',
   reviewText: 'reviewText',
+  sendSMS: 'sendSMS',
+  sendWhatsApp: 'sendWhatsApp',
   createdAt: 'createdAt',
   status: 'status'
 } as const
 
 export type CustomerReviewScalarFieldEnum = (typeof CustomerReviewScalarFieldEnum)[keyof typeof CustomerReviewScalarFieldEnum]
+
+
+export const ShortLinkScalarFieldEnum = {
+  id: 'id',
+  shortCode: 'shortCode',
+  reviewText: 'reviewText',
+  customerName: 'customerName',
+  shopName: 'shopName',
+  productName: 'productName',
+  clicks: 'clicks',
+  createdAt: 'createdAt',
+  expiresAt: 'expiresAt'
+} as const
+
+export type ShortLinkScalarFieldEnum = (typeof ShortLinkScalarFieldEnum)[keyof typeof ShortLinkScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -101,4 +119,12 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

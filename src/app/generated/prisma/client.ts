@@ -44,3 +44,8 @@ export { Prisma }
  * 
  */
 export type CustomerReview = Prisma.CustomerReviewModel
+/**
+ * Model ShortLink
+ * 
+ */
+export type ShortLink = Prisma.ShortLinkModel

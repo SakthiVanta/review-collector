@@ -22,3 +22,8 @@ export * from './enums';
  * 
  */
 export type CustomerReview = Prisma.CustomerReviewModel
+/**
+ * Model ShortLink
+ * 
+ */
+export type ShortLink = Prisma.ShortLinkModel

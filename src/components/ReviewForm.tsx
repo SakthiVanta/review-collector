@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
-import { CheckCircle2, Loader2, User, Mail, Phone, Package } from "lucide-react"
+import { CheckCircle2, Loader2, User, Mail, Phone, Package, MessageSquare, Smartphone } from "lucide-react"
 import { shopConfig } from "@/config/shop"
 
 const formSchema = z.object({
@@ -24,6 +24,11 @@ const formSchema = z.object({
     productName: z.string().min(2, { message: "Required" }),
     rating: z.string().min(1, { message: "Select" }),
     reviewText: z.string().min(20, { message: "Min 20 chars" }),
+    sendSMS: z.boolean().default(false),
+    sendWhatsApp: z.boolean().default(false),
+}).refine((data) => data.sendSMS || data.sendWhatsApp, {
+    message: "Select at least one notification method",
+    path: ["sendWhatsApp"],
 })
 
 function StarRating({ value, onChange }: { value: string; onChange: (value: string) => void }) {
@@ -76,6 +81,8 @@ export function ReviewForm() {
             productName: "",
             rating: "",
             reviewText: "",
+            sendSMS: false,
+            sendWhatsApp: false,
         },
     })
 
@@ -92,10 +99,18 @@ export function ReviewForm() {
                 }),
             })
 
-            if (!response.ok) throw new Error("Failed to submit")
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.error || "Failed to submit")
+            }
+            
             setIsSuccess(true)
         } catch (error) {
             console.error(error)
+            form.setError("root", { 
+                type: "manual", 
+                message: error instanceof Error ? error.message : "Failed to submit" 
+            })
         } finally {
             setIsSubmitting(false)
         }
@@ -108,9 +123,9 @@ export function ReviewForm() {
                     <CheckCircle2 className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">Sent!</h3>
-                <p className="text-sm text-gray-500 mb-6">WhatsApp message delivered</p>
-                <Button 
-                    onClick={() => { setIsSuccess(false); form.reset(); }} 
+                <p className="text-sm text-gray-500 mb-6">Review request delivered</p>
+                <Button
+                    onClick={() => { setIsSuccess(false); form.reset(); }}
                     variant="outline"
                     size="sm"
                     className="rounded-full px-6 text-sm border-gray-300 text-gray-700 hover:bg-gray-50"
@@ -255,7 +270,7 @@ export function ReviewForm() {
                 <div className="px-4 py-3 bg-gray-100 border-y border-gray-200">
                     <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Review</h3>
                 </div>
-                
+
                 <FormField
                     control={form.control}
                     name="reviewText"
@@ -273,10 +288,63 @@ export function ReviewForm() {
                     )}
                 />
 
+                {/* Section Header - Send Via */}
+                <div className="px-4 py-3 bg-gray-100 border-y border-gray-200">
+                    <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Send Via</h3>
+                </div>
+
+                <div className="px-4 py-4 space-y-3">
+                    <FormField
+                        control={form.control}
+                        name="sendSMS"
+                        render={({ field }) => (
+                            <FormItem className="flex items-center space-x-3 space-y-0">
+                                <FormControl>
+                                    <input
+                                        type="checkbox"
+                                        checked={field.value}
+                                        onChange={(e) => field.onChange(e.target.checked)}
+                                        className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    />
+                                </FormControl>
+                                <div className="flex items-center gap-2 text-sm text-gray-700">
+                                    <Smartphone className="w-4 h-4 text-gray-400" />
+                                    <span>SMS</span>
+                                </div>
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="sendWhatsApp"
+                        render={({ field }) => (
+                            <FormItem className="flex items-center space-x-3 space-y-0">
+                                <FormControl>
+                                    <input
+                                        type="checkbox"
+                                        checked={field.value}
+                                        onChange={(e) => field.onChange(e.target.checked)}
+                                        className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    />
+                                </FormControl>
+                                <div className="flex items-center gap-2 text-sm text-gray-700">
+                                    <MessageSquare className="w-4 h-4 text-gray-400" />
+                                    <span>WhatsApp</span>
+                                </div>
+                            </FormItem>
+                        )}
+                    />
+
+                    {form.formState.errors.root && (
+                        <p className="text-xs text-red-500">{form.formState.errors.root.message}</p>
+                    )}
+                </div>
+
                 {/* Submit Button */}
                 <div className="p-4 pt-2 bg-gray-50 border-t border-gray-200">
-                    <Button 
-                        type="submit" 
+                    <Button
+                        type="submit"
                         className="w-full h-11 text-sm font-semibold bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white rounded-xl shadow-lg shadow-blue-500/25 transition-all active:scale-[0.98]"
                         disabled={isSubmitting}
                     >
@@ -286,10 +354,10 @@ export function ReviewForm() {
                                 Sending...
                             </>
                         ) : (
-                            "Send WhatsApp Review"
+                            "Send Review Request"
                         )}
                     </Button>
-                    
+
                     <p className="text-center text-xs text-gray-400 mt-3">
                         {shopConfig.name}
                     </p>

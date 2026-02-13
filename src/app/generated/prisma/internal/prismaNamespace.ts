@@ -384,7 +384,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
-  CustomerReview: 'CustomerReview'
+  CustomerReview: 'CustomerReview',
+  ShortLink: 'ShortLink'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -400,7 +401,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "customerReview"
+    modelProps: "customerReview" | "shortLink"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -478,6 +479,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ShortLink: {
+      payload: Prisma.$ShortLinkPayload<ExtArgs>
+      fields: Prisma.ShortLinkFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ShortLinkFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLinkPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ShortLinkFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLinkPayload>
+        }
+        findFirst: {
+          args: Prisma.ShortLinkFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLinkPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ShortLinkFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLinkPayload>
+        }
+        findMany: {
+          args: Prisma.ShortLinkFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLinkPayload>[]
+        }
+        create: {
+          args: Prisma.ShortLinkCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLinkPayload>
+        }
+        createMany: {
+          args: Prisma.ShortLinkCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ShortLinkCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLinkPayload>[]
+        }
+        delete: {
+          args: Prisma.ShortLinkDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLinkPayload>
+        }
+        update: {
+          args: Prisma.ShortLinkUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLinkPayload>
+        }
+        deleteMany: {
+          args: Prisma.ShortLinkDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ShortLinkUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ShortLinkUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLinkPayload>[]
+        }
+        upsert: {
+          args: Prisma.ShortLinkUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLinkPayload>
+        }
+        aggregate: {
+          args: Prisma.ShortLinkAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateShortLink>
+        }
+        groupBy: {
+          args: Prisma.ShortLinkGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShortLinkGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ShortLinkCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShortLinkCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -527,11 +602,28 @@ export const CustomerReviewScalarFieldEnum = {
   productName: 'productName',
   rating: 'rating',
   reviewText: 'reviewText',
+  sendSMS: 'sendSMS',
+  sendWhatsApp: 'sendWhatsApp',
   createdAt: 'createdAt',
   status: 'status'
 } as const
 
 export type CustomerReviewScalarFieldEnum = (typeof CustomerReviewScalarFieldEnum)[keyof typeof CustomerReviewScalarFieldEnum]
+
+
+export const ShortLinkScalarFieldEnum = {
+  id: 'id',
+  shortCode: 'shortCode',
+  reviewText: 'reviewText',
+  customerName: 'customerName',
+  shopName: 'shopName',
+  productName: 'productName',
+  clicks: 'clicks',
+  createdAt: 'createdAt',
+  expiresAt: 'expiresAt'
+} as const
+
+export type ShortLinkScalarFieldEnum = (typeof ShortLinkScalarFieldEnum)[keyof typeof ShortLinkScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -548,6 +640,14 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
@@ -581,6 +681,13 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -721,6 +828,7 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   customerReview?: Prisma.CustomerReviewOmit
+  shortLink?: Prisma.ShortLinkOmit
 }
 
 /* Types for Logging */
