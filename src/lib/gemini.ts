@@ -33,6 +33,9 @@ interface ReviewGenerationInput {
   improvementAreas?: string;
   recommendationLikelihood: number; // 1-10
 
+  // Event/Occasion
+  events?: string;
+
   // Psychological/Behavioral
   shoppingMotivation?: string;
   priceSensitivity?: string;
@@ -109,6 +112,7 @@ ${input.purchaseDuration ? `- Duration as Customer: ${input.purchaseDuration}` :
 
 EXPERIENCE DETAILS:
 - Overall Satisfaction (1-10): ${input.satisfactionLevel}
+${input.events ? `- Occasion/Event: ${input.events}` : ""}
 ${input.keyHighlights ? `- Key Highlights: ${input.keyHighlights}` : ""}
 ${input.improvementAreas ? `- Areas for Improvement: ${input.improvementAreas}` : ""}
 - Likelihood to Recommend (1-10): ${input.recommendationLikelihood}

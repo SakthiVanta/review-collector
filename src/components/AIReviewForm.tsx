@@ -41,7 +41,8 @@ import {
     Wand2,
     Bot,
     Sparkle,
-    Check
+    Check,
+    Calendar
 } from "lucide-react"
 import { shopConfig } from "@/config/shop"
 
@@ -81,6 +82,9 @@ const customerSchema = z.object({
     keyHighlights: z.string().optional(),
     improvementAreas: z.string().optional(),
     recommendationLikelihood: z.string().min(1).max(10),
+    // Event field with others option
+    events: z.array(z.string()).default([]),
+    eventOther: z.string().optional(),
     // Multi-select arrays for psychological insights
     shoppingMotivation: z.array(z.string()).default([]),
     priceSensitivity: z.string().default(""),
@@ -104,6 +108,19 @@ const MOTIVATION_OPTIONS = [
     { value: "convenience", label: "Convenience", icon: "⚡", color: "bg-blue-100 border-blue-300 text-blue-700" },
     { value: "recommendation", label: "Recommendation", icon: "👥", color: "bg-indigo-100 border-indigo-300 text-indigo-700" },
     { value: "emotional", label: "Emotional Connection", icon: "❤️", color: "bg-rose-100 border-rose-300 text-rose-700" },
+]
+
+// Event options for multi-select with "Others" option
+const EVENT_OPTIONS = [
+    { value: "wedding", label: "Wedding", icon: "💒", color: "bg-pink-100 border-pink-300 text-pink-700" },
+    { value: "engagement", label: "Engagement", icon: "💍", color: "bg-rose-100 border-rose-300 text-rose-700" },
+    { value: "anniversary", label: "Anniversary", icon: "🎉", color: "bg-purple-100 border-purple-300 text-purple-700" },
+    { value: "birthday", label: "Birthday", icon: "🎂", color: "bg-amber-100 border-amber-300 text-amber-700" },
+    { value: "festival", label: "Festival (Diwali, etc.)", icon: "🪔", color: "bg-orange-100 border-orange-300 text-orange-700" },
+    { value: "gift", label: "Gift", icon: "🎁", color: "bg-red-100 border-red-300 text-red-700" },
+    { value: "investment", label: "Investment", icon: "📈", color: "bg-green-100 border-green-300 text-green-700" },
+    { value: "daily_wear", label: "Daily Wear", icon: "✨", color: "bg-blue-100 border-blue-300 text-blue-700" },
+    { value: "other", label: "Others", icon: "📝", color: "bg-gray-100 border-gray-300 text-gray-700" },
 ]
 
 const PRICE_SENSITIVITY_OPTIONS = [
@@ -321,6 +338,84 @@ function MultiSelectMotivation({
     )
 }
 
+// Multi-select component for events with "Others" option
+function MultiSelectEventsWithOther({ 
+    value, 
+    onChange,
+    otherValue,
+    onOtherChange
+}: { 
+    value: string[]; 
+    onChange: (value: string[]) => void;
+    otherValue: string;
+    onOtherChange: (value: string) => void;
+}) {
+    const toggleOption = (optionValue: string) => {
+        if (value.includes(optionValue)) {
+            onChange(value.filter(v => v !== optionValue))
+        } else {
+            onChange([...value, optionValue])
+        }
+    }
+
+    const isOtherSelected = value.includes("other")
+
+    return (
+        <div className="space-y-3">
+            <p className="text-xs text-gray-500">Select all that apply (tap to select/deselect)</p>
+            <div className="grid grid-cols-2 gap-2">
+                {EVENT_OPTIONS.map((option) => {
+                    const isSelected = value.includes(option.value)
+                    return (
+                        <button
+                            key={option.value}
+                            type="button"
+                            onClick={() => toggleOption(option.value)}
+                            className={`
+                                relative p-3 rounded-xl border-2 transition-all duration-200 text-left
+                                ${isSelected 
+                                    ? option.color + ' border-current shadow-md scale-[0.98]' 
+                                    : 'bg-white border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                                }
+                            `}
+                        >
+                            <div className="flex items-start gap-2">
+                                <span className="text-lg">{option.icon}</span>
+                                <div className="flex-1 min-w-0">
+                                    <p className={`text-xs font-semibold ${isSelected ? 'text-current' : 'text-gray-700'}`}>
+                                        {option.label}
+                                    </p>
+                                </div>
+                                {isSelected && (
+                                    <div className="absolute top-2 right-2 w-4 h-4 bg-current rounded-full flex items-center justify-center">
+                                        <Check className="w-3 h-3 text-white" />
+                                    </div>
+                                )}
+                            </div>
+                        </button>
+                    )
+                })}
+            </div>
+            
+            {/* Show input when "Others" is selected */}
+            {isOtherSelected && (
+                <div className="mt-3 p-3 bg-gray-50 rounded-xl border border-gray-200 animate-in slide-in-from-top-2">
+                    <label className="text-xs font-semibold text-gray-700 mb-2 block">
+                        Please specify the event:
+                    </label>
+                    <Input
+                        type="text"
+                        placeholder="Enter custom event..."
+                        value={otherValue}
+                        onChange={(e) => onOtherChange(e.target.value)}
+                        className="h-10 text-sm border-gray-300 rounded-lg focus:border-violet-500 focus:ring-violet-500/20"
+                    />
+                </div>
+            )}
+        </div>
+    )
+}
+
 // Single-select card component
 function SelectCard({ 
     options, 
@@ -388,6 +483,8 @@ interface FormData {
     keyHighlights?: string;
     improvementAreas?: string;
     recommendationLikelihood?: string;
+    events?: string[];
+    eventOther?: string;
     shoppingMotivation?: string[];
     priceSensitivity?: string;
     brandLoyalty?: string;
@@ -425,6 +522,8 @@ export function AIReviewForm() {
             keyHighlights: "",
             improvementAreas: "",
             recommendationLikelihood: "9",
+            events: [],
+            eventOther: "",
             shoppingMotivation: [],
             priceSensitivity: "",
             brandLoyalty: "",
@@ -798,6 +897,28 @@ export function AIReviewForm() {
                                                 placeholder="e.g., 2 years" 
                                                 className="h-11 text-sm border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-emerald-500/20 transition-all"
                                                 {...field} 
+                                            />
+                                        </FormControl>
+                                        <FormMessage className="text-xs text-red-500" />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={customerForm.control}
+                                name="events"
+                                render={({ field }) => (
+                                    <FormItem className="space-y-3">
+                                        <div className="flex items-center gap-2">
+                                            <Calendar className="w-4 h-4 text-emerald-500" />
+                                            <FormLabel className="text-sm font-semibold text-gray-700">What's the occasion?</FormLabel>
+                                        </div>
+                                        <FormControl>
+                                            <MultiSelectEventsWithOther
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                otherValue={customerForm.watch("eventOther") || ""}
+                                                onOtherChange={(value) => customerForm.setValue("eventOther", value)}
                                             />
                                         </FormControl>
                                         <FormMessage className="text-xs text-red-500" />

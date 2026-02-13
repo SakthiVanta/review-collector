@@ -36,6 +36,8 @@ export async function POST(req: Request) {
             keyHighlights,
             improvementAreas,
             recommendationLikelihood,
+            events,
+            eventOther,
             shoppingMotivation,
             priceSensitivity,
             brandLoyalty,
@@ -54,6 +56,18 @@ export async function POST(req: Request) {
         const motivationStr = Array.isArray(shoppingMotivation) 
             ? shoppingMotivation.join(", ") 
             : shoppingMotivation;
+
+        // Process events - replace "other" with the custom text if provided
+        let eventStr = "";
+        if (Array.isArray(events) && events.length > 0) {
+            const processedEvents = events.map(event => {
+                if (event === "other" && eventOther) {
+                    return eventOther;
+                }
+                return event;
+            });
+            eventStr = processedEvents.join(", ");
+        }
 
         // Find the location label if shopLocation is provided
         const locationLabel = shopLocation ? 
@@ -76,6 +90,7 @@ export async function POST(req: Request) {
             keyHighlights,
             improvementAreas,
             recommendationLikelihood: parseInt(recommendationLikelihood) || 9,
+            events: eventStr,
             shoppingMotivation: motivationStr,
             priceSensitivity,
             brandLoyalty,
